@@ -137,7 +137,7 @@ async def test_merten_507801(
 async def test_shelly_001p10_disabled_entities(
     hass: HomeAssistant, client, shelly_qnsh_001P10_shutter, integration
 ) -> None:
-    """Test that Shelly 001P10 entity created by endpoint 2 is disabled."""
+    """Test that Shelly 001P10 entity created by endpoint 2 is disabled and entity for endpoint 1 is enabled as expected."""
     registry = er.async_get(hass)
     entity_ids = [
         "cover.wave_shutter_2",
@@ -154,6 +154,9 @@ async def test_shelly_001p10_disabled_entities(
         updated_entry = registry.async_update_entity(entry.entity_id, disabled_by=None)
         assert updated_entry != entry
         assert updated_entry.disabled is False
+
+    state = hass.states.get("cover.wave_shutter")
+    assert state
 
 
 async def test_merten_507801_disabled_enitites(
